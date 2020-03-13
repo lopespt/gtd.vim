@@ -50,11 +50,10 @@ endfunction
 function! gtd#files#DirGetGWL()
   let l:x=getline(search("^!folder:.*$","wn"))
   let l:x=substitute(l:x, '!folder:\s*', "", "")
-  if l:x !~ '^\s*$'
-    return l:x
-  else
-    return call gtd#files#DirGet()
+  if l:x =~ '^\s*$'
+    let l:x=gtd#files#DirGet()
   endif
+  return l:x
 endfunction
 
 function! gtd#files#DirGet()
