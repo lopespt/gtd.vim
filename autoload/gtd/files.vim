@@ -2,7 +2,7 @@
 function! gtd#files#Open()
 
 	try
-		let l:gtd_note_dir = gtd#files#DirGet()
+		let l:gtd_note_dir = gtd#files#DirGetGWL()
 
 		" Creation of the directory if needed
 		if !gtd#files#DirTest(l:gtd_note_dir)
@@ -38,13 +38,23 @@ function! gtd#files#Open()
 endfunction
 
 function! gtd#files#Explore()
-	let l:gtd_note_dir = gtd#files#DirGet()
+	let l:gtd_note_dir = gtd#files#DirGetGWL()
 
 	if !gtd#files#DirTest(l:gtd_note_dir)
 		echomsg "Gtd note directory ".l:gtd_note_dir." doesn't exist"
 	else
 		execute "Vexplore" l:gtd_note_dir
 	endif
+endfunction
+
+function! gtd#files#DirGetGWL()
+  let l:x=getline(search("^!folder:.*$","wn"))
+  let l:x=substitute(l:x, '!folder:\s*', "", "")
+  if l:x !~ '^\s*$'
+    return l:x
+  else
+    return call gtd#files#DirGet()
+  endif
 endfunction
 
 function! gtd#files#DirGet()
